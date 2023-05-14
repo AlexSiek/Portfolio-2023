@@ -12,6 +12,19 @@
     position: relative;
 }
 
+.animationContainerFlip {
+    animation: flip-frame 1s;
+}
+
+.flippedProperties {
+    transform: scaleX(-1) rotate(105deg);
+}
+
+.removeContainer {
+    scale: 0;
+    transition: scale 0.25s ease-out;
+}
+
 .line1, .line2, .line3 {
     margin: 0;
     position: absolute;
@@ -86,5 +99,17 @@
     }
     100% {
         transform: scaleX(0);
+    }
+}
+
+@keyframes flip-frame {
+    0% {
+        transform: scaleX(1) rotate(0deg);
+    }
+    20% {
+        transform: scaleX(-1) rotate(21deg);
+    }
+    100% {
+        transform: scaleX(-1) rotate(105deg);
     }
 }

@@ -46,6 +46,10 @@ h5 {
     font-size: 22px;
 }
 
+.d-none {
+    display: none;
+}
+
 .body-1 {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;

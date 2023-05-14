@@ -4,9 +4,13 @@ import { useState, useEffect } from 'react';
 export default function MainLayout({ children }) {
     const [isLoaded, setIsLoaded] = useState(false);
 
+    useEffect(() => {
+        setTimeout(() => setIsLoaded(true),5000)
+    }, [])
+
     return (
         <>
-            {isLoaded ? (
+            {false ? (
                 <main>{children}</main>
             ) : 
             (
