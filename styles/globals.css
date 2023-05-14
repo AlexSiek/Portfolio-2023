@@ -1,26 +1,129 @@
-html,
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Raleway:wght@400;700&display=swap');
+/*
+Desktop - >= 1200px
+Tablet  - >=768px, <1200px
+Mobile  - >= 576px, <768px
+*/
+
+:root {
+    --orange: #F15025;
+    --black: #191919;
+    --white: #E6E8E6;
+    --grey: #CED0CE;
+    --black50: #19191980;
+}
+
+html {
+    font-family: 'Oswald', 'Raleway', sans-serif;
+}
+
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 68px;
 }
 
-* {
-  box-sizing: border-box;
+h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 50px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 38px;
+}
+
+h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 29px;
+}
+
+h5 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+}
+
+.body-1 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.body-2 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.mobile-only {
+    display: none;
+}
+
+.desktop-only {
+    display: block;
+}
+
+.bg-white {
+    background-color: var(--white);
+}
+
+.bg-orange {
+    background-color: var(--orange);
+}
+
+.bg-black {
+    background-color: var(--black);
+}
+
+.bg-grey {
+    background-color: var(--grey);
+}
+
+.white {
+    color: var(--white);
+}
+
+.orange {
+    color: var(--orange);
+}
+
+.black {
+    color: var(--black);
+}
+
+.grey {
+    color: var(--grey);
+}
+
+@media screen and (max-width: 576px) {
+    h1 {
+        font-size: 48px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    h3 {
+        font-size: 32px;
+    }
+
+    h4 {
+        font-size: 24px;
+    }
+
+    h5 {
+        font-size: 20px;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+
+    .desktop-only {
+        display: none;
+    }
 }

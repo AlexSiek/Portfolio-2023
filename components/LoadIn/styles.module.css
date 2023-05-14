@@ -1,0 +1,90 @@
+.backdrop {
+    width: auto;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.animationContainer {
+    width: 35.25px;
+    height: 79.15px;
+    position: relative;
+}
+
+.line1, .line2, .line3 {
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    border: none;
+    border-top: 5px solid var(--orange);
+    border-radius: 5px;
+    box-shadow: 0 4px 4px var(--black50);
+    transform-origin: left;
+}
+
+.line1 {
+    rotate: -75deg;
+    translate: 1px 3px;
+}
+
+.line2 {
+    rotate: 75deg;
+    translate: 14px -50px;
+}
+
+.line3 {
+    box-shadow: 0 -4px 4px var(--black50);
+    rotate: -75deg;
+    translate: 20px -24px;
+}
+
+.w55 {
+    width: 55px;
+}
+
+.w27 {
+    width: 27px;
+}
+
+.unloadLine1 {
+    animation: scale-x-0 0.2s ease-out;
+}
+
+.unloadLine2 {
+    animation: scale-x-0 0.05s;
+}
+
+.unloadLine3 {
+    animation: scale-x-0 0.5s ease-in;
+}
+
+.loadLine1 {
+    animation: scale-x-1 0.5s ease-in;
+}
+
+.loadLine2 {
+    animation: scale-x-1 0.05s;
+}
+
+.loadLine3 {
+    animation: scale-x-1 0.2s ease-out;
+}
+
+@keyframes scale-x-1 {
+    0% {
+        transform: scaleX(0);
+    }
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes scale-x-0 {
+    0% {
+        transform: scaleX(1);
+    }
+    100% {
+        transform: scaleX(0);
+    }
+}
