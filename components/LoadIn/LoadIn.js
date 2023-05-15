@@ -1,7 +1,8 @@
 import styles from './styles.module.css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function LoadIn({isLoaded}) {
+export default function LoadIn({ isLoaded }) {
+
     const cx = (...classNames) => classNames.join(' ');
     const stylesLookup = {
         standBy: {
@@ -47,13 +48,28 @@ export default function LoadIn({isLoaded}) {
         })
     }
 
-    const loadInAnimation = () => {
+    //Load in animation - 750ms
+    //if isLoaded -> clear animation - 2500
+    //else 1s delay, load out animation - 750ms
+
+    /*
+    if promises are delcare to a const, it will run as the const is treated as the reply container.
+    thus we put them in a function that returns the promise, so we can trigger the promise when intended.
+    */
+
+    const [animationState, setAnimationState] = useState("loadingIn")//LoadingIn, loadedIn, loadingOut, loaded Out, clearing , cleared
+
+    const loadInPromise = () => new Promise((resolve) => {
         setMode(0, "loadIn")
         setTimeout(() => setMode(1, "loadIn"), 500);
         setTimeout(() => setMode(2, "loadIn"), 550);
-    }
+        setTimeout(() => {
+            resolve()
+            setAnimationState("loadedIn")
+        }, 750);
+    });
 
-    const loadOutAnimation = () => {
+    const loadOutPromise = () => new Promise((resolve) => {
         setMode(2, "loadOut")
         setTimeout(() => {
             setMode(2, "standBy")
@@ -64,41 +80,36 @@ export default function LoadIn({isLoaded}) {
             setMode(0, "loadOut")
         }, 550);
         setTimeout(() => setMode(0, "standBy"), 750);
-    }
+        setTimeout(() => {
+            resolve()
+            setAnimationState("loadedOut")
+        }, 750);
+    });
 
-    const animationLoop = () => {
-        const loop = () => {
-            loadInAnimation()
-            setTimeout(() => {
-                if (isLoaded) {
-                    // 500ms pause before flip animation
-                    setTimeout(() => setFrameState("inProgress"), 500);
-                    setTimeout(() => setFrameState("completed"), 1500); //Extra 1s for flip animation
-                    setTimeout(() => setFrameState("remove"), 2500);
-                    setTimeout(() => setFrameState("removed"), 2750);
-                }else {
-                    // wait 2s before loading out, wait another 2s then repeat function
-                    setTimeout(() => loadOutAnimation(), 2000);
-                    setTimeout(() => loop(), 4000);
-                }
-            }, 750)
-        }
-        
-        loop();
-    }
-    
+    const clearAnimationPromise = () => new Promise((resolve) => {
+        setAnimationState("Clearing")
+        setTimeout(() => setFrameState("inProgress"), 500);
+        setTimeout(() => setFrameState("completed"), 1500); //Extra 1s for flip animation
+        setTimeout(() => setFrameState("remove"), 2500);
+        setTimeout(() => setFrameState("removed"), 2750);
+        setTimeout(() => {
+            resolve()
+        }, 2500);
+    });
+
+    const delayPromise = (state) => new Promise((resolve) => {
+        setAnimationState(state)
+        setTimeout(resolve, 1000);
+    });
+
     useEffect(() => {
-        animationLoop()
+        //First load in
+        
     }, [])
-
-    // useEffect(() => {
-    //     setStateCutLoop(isLoaded)
-    // }, [isLoaded])
-
 
     return (
         <>
-            <div className={cx(styles.backdrop, "bg-black")}>
+            <div className={cx(styles.backdrop)}>
                 <div className={cx(...stylesLookup[frameState].frame)}>
                     <hr className={cx(...stylesLookup[lineState[0]].line1)} />
                     <hr className={cx(...stylesLookup[lineState[1]].line2)} />

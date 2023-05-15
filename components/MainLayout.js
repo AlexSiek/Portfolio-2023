@@ -4,20 +4,18 @@ import { useState, useEffect } from 'react';
 export default function MainLayout({ children }) {
     const [isLoaded, setIsLoaded] = useState(false);
 
-    useEffect(() => {
-        setTimeout(() => setIsLoaded(true),5000)
-    }, [])
+    // useEffect(() => {
+    //     setTimeout(() => setIsLoaded(true), 3500)
+    // }, [])
 
     return (
         <>
-            {false ? (
-                <main>{children}</main>
-            ) : 
-            (
+            <main>
                 <LoadIn
                     isLoaded={isLoaded}
                 />
-            )}
+                {children}
+            </main>
         </>
     )
 }
