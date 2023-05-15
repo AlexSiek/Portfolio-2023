@@ -1,15 +1,17 @@
 .backdrop {
-    width: auto;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
 }
 
 .animationContainer {
     width: 35.25px;
     height: 79.15px;
     position: relative;
+    pointer-events: none;
 }
 
 .animationContainerFlip {

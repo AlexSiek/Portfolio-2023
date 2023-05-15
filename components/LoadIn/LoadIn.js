@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function LoadIn({ isLoaded }) {
 
@@ -57,9 +57,10 @@ export default function LoadIn({ isLoaded }) {
     thus we put them in a function that returns the promise, so we can trigger the promise when intended.
     */
 
-    const [animationState, setAnimationState] = useState("loadingIn")//LoadingIn, loadedIn, loadingOut, loaded Out, clearing , cleared
+    const [animationState, setAnimationState] = useState()// loadingIn ,loadedIn, delayOut, loadingOut, loadedOut, delayIn, clearing , cleared
 
     const loadInPromise = () => new Promise((resolve) => {
+        setAnimationState("loadingIn")
         setMode(0, "loadIn")
         setTimeout(() => setMode(1, "loadIn"), 500);
         setTimeout(() => setMode(2, "loadIn"), 550);
@@ -70,6 +71,7 @@ export default function LoadIn({ isLoaded }) {
     });
 
     const loadOutPromise = () => new Promise((resolve) => {
+        setAnimationState("loadingOut")
         setMode(2, "loadOut")
         setTimeout(() => {
             setMode(2, "standBy")
@@ -102,14 +104,106 @@ export default function LoadIn({ isLoaded }) {
         setTimeout(resolve, 1000);
     });
 
+    const animationDetails = {
+        totalDuration: 3500,
+        loadIn: {
+            promise: loadInPromise,
+            duration: 750,
+            accumDuration: 0,
+        },
+        delayOut: {
+            promise: delayPromise,
+            duration: 1000,
+            animationState: "delayOut",
+            accumDuration: 750,
+        },
+        loadOut: {
+            promise: loadOutPromise,
+            duration: 750,
+            accumDuration: 1750,
+        },
+        delayIn: {
+            promise: delayPromise,
+            duration: 1000,
+            animationState: "delayIn",
+            accumDuration: 2500,
+        },
+        clearAnimation: {
+            promise: clearAnimationPromise,
+            duration: 2750,
+        }
+    };
+    const intervalsRefs = useRef([]);
+    const timeoutsRefs = useRef([]);
     useEffect(() => {
-        //First load in
-        
-    }, [])
-
+        if (!isLoaded) {
+            /* 
+            Because promises cannot be cancelled,
+            we can only clear the setIntervals and setTimeouts 
+            to cancel the future states of animation 
+            */
+            [
+                animationDetails.loadIn,
+                animationDetails.delayOut,
+                animationDetails.loadOut,
+                animationDetails.delayIn
+            ].forEach((animationStateToQueue) => {
+                // First animation
+                timeoutsRefs.current.push(
+                    setTimeout(() => {
+                        animationStateToQueue.animationState ?
+                            animationStateToQueue.promise(animationStateToQueue.animationState) :
+                            animationStateToQueue.promise()
+                    }, animationStateToQueue.accumDuration)
+                );
+                // Subsequent Animations
+                timeoutsRefs.current.push(
+                    setTimeout(() => {
+                        intervalsRefs.current.push(
+                            setInterval(() => {
+                                animationStateToQueue.animationState ?
+                                    animationStateToQueue.promise(animationStateToQueue.animationState) :
+                                    animationStateToQueue.promise()
+                            }, animationDetails.totalDuration)
+                        )
+                    }, animationStateToQueue.accumDuration)
+                )
+            })
+        } else {
+            // Cut animation at loadedIn, then clearAnimation depending on the state
+            intervalsRefs.current.forEach((singleInterval) => clearInterval(singleInterval));
+            timeoutsRefs.current.forEach((singleTimeout) => clearInterval(singleTimeout))
+            switch (animationState) {
+                // loadingIn ,loadedIn, delayOut, loadingOut, loadedOut, delayIn
+                case "loadingIn":
+                    delayPromise("loadedIn")
+                        .then(() => clearAnimationPromise());
+                    break;
+                case "loadedIn":
+                    clearAnimationPromise();
+                    break;
+                case "delayOut":
+                    delayPromise("loadedOut")
+                        .then(() => loadOutPromise())
+                        .then(() => delayPromise("loadedOut"))
+                        .then(() => loadInPromise())
+                        .then(() => clearAnimationPromise());
+                    break;
+                case "loadingOut":
+                    delayPromise("loadedOut")
+                        .then(() => loadInPromise())
+                        .then(() => clearAnimationPromise());
+                    break;
+                case "loadedOut":
+                    loadInPromise()
+                        .then(() => clearAnimationPromise());
+                    break;
+            }
+        }
+    }, [isLoaded])
     return (
         <>
-            <div className={cx(styles.backdrop)}>
+            <div className={cx(styles.backdrop, "absolute")}>
                 <div className={cx(...stylesLookup[frameState].frame)}>
                     <hr className={cx(...stylesLookup[lineState[0]].line1)} />
                     <hr className={cx(...stylesLookup[lineState[1]].line2)} />

@@ -102,6 +102,10 @@ h5 {
     color: var(--grey);
 }
 
+.absolute {
+    position: absolute;
+}
+
 @media screen and (max-width: 576px) {
     h1 {
         font-size: 48px;
