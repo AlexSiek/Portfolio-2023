@@ -1,4 +1,6 @@
 import LoadIn from './LoadIn/LoadIn'
+import DynamicCensor from './DynamicCensor/DynamicCensor'
+import Image from 'next/image';
 import { useState, useTransition } from 'react';
 
 export default function MainLayout({ children }) {
@@ -10,7 +12,7 @@ export default function MainLayout({ children }) {
     return (
         <>
             <main>
-                <LoadIn
+                {/* <LoadIn
                     isLoaded={isLoaded}
                 />
                 <button onClick={() => {
@@ -22,8 +24,15 @@ export default function MainLayout({ children }) {
                     startTransition(() => {
                         setIsLoaded(false);
                     });
-                }}>Reset Animation</button>
+                }}>Reset Animation</button> */}
                 {children}
+                <DynamicCensor
+                    changeInterval={1000}
+                    sizeOfBlock={20}
+                    opacitySteps={5}
+                    width={30}
+                    height={10}
+                />
             </main>
         </>
     )

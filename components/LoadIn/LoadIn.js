@@ -1,4 +1,4 @@
-import styles from './styles.module.css';
+import styles from './LoadIn.module.css';
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function LoadIn({ isLoaded }) {
