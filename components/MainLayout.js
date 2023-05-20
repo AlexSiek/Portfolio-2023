@@ -1,5 +1,6 @@
 import LoadIn from './LoadIn/LoadIn'
 import DynamicCensor from './DynamicCensor/DynamicCensor'
+import NameCard from './NameCard/NameCard';
 import Image from 'next/image';
 import { useState, useTransition } from 'react';
 
@@ -26,13 +27,14 @@ export default function MainLayout({ children }) {
                     });
                 }}>Reset Animation</button> */}
                 {children}
-                <DynamicCensor
+                {/* <DynamicCensor
                     changeInterval={1000}
                     sizeOfBlock={20}
                     opacitySteps={5}
                     width={30}
                     height={10}
-                />
+                /> */}
+                <NameCard/>
             </main>
         </>
     )

@@ -11,6 +11,8 @@ Mobile  - >= 576px, <768px
     --white: #E6E8E6;
     --grey: #CED0CE;
     --black50: #19191980;
+    --tabletMaxWidth: 768px;
+    --mobileMaxWidth: 576px;
 }
 
 html {
@@ -110,7 +112,7 @@ h5 {
     position: absolute;
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: var(--mobileMaxWidth)) {
     h1 {
         font-size: 48px;
     }
